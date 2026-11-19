@@ -1,0 +1,2 @@
+# The application and Python unittest suite use only the standard library.
+# The optional browser audit requires Playwright and Chromium.

@@ -1,0 +1,45 @@
+# Course submission materials and generated demo files
+/docs/
+/SUBMISSION_GUIDE.md
+/browser-audit-*.png
+/aisle-ai-mission-results.json
+
+# Python environments, bytecode, test output, and build artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+/build/
+/dist/
+*.egg-info/
+/node_modules/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+/.aws/
+/.agents/
+/.codex/
+
+# Editors, operating systems, and temporary files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.tmp
+*.log

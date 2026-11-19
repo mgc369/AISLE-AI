@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101211" />
+  <meta name="description" content="AISLE AI — interactive warehouse robotics simulation combining A*, hill climbing, and MDP value iteration." />
+  <title>AISLE AI — Warehouse Intelligence</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css?v=20261023-uniform-metrics" />
+</head>
+<body>
+  <a class="skip-link" href="#warehouseCanvas">Skip to warehouse</a>
+  <div class="ambient ambient-1"></div><div class="ambient ambient-2"></div>
+  <div class="shell">
+    <header class="topbar">
+      <div class="identity">
+        <div class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 25V7h8v18M20 7h8v18M12 12h8v8h-8z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M4 16h8m8 0h8" stroke="currentColor" stroke-width="2.4"/></svg></div>
+        <div><div class="logo-text">AISLE<span>.AI</span></div><div class="brand-subtitle">WAREHOUSE INTELLIGENCE LAB</div></div>
+      </div>
+    </header>
+
+    <div class="page-heading"><div><div class="breadcrumb">WORKSPACE <span>/</span> WAREHOUSE OPERATIONS</div><h1>Every move.<br class="mobile-break"> <em>A better decision.</em></h1><p>Design your floor. Find the best order. Navigate uncertainty.</p></div><div class="heading-meta"><span class="lab-label"><span class="green-dot"></span> INTERACTIVE SIMULATION</span><div class="heading-coordinates">A* <span>→</span> HILL CLIMBING <span>→</span> MDP</div><span class="heading-note">Three algorithms. One connected mission.</span></div></div>
+    <main class="workspace" id="workspace">
+      <aside class="left-rail">
+        <section class="panel scenario-panel">
+          <div class="section-top"><span class="eyebrow">01 / ENVIRONMENT</span><span class="panel-symbol" aria-hidden="true">⌘</span></div>
+          <h2>Mission setup</h2><p class="subtle">Create your warehouse and define the pick-up mission.</p>
+          <label for="presetSelect" class="input-label">WAREHOUSE SCENARIO</label>
+          <div class="select-wrap scenario-select"><select id="presetSelect" aria-label="Warehouse scenario"><option value="standard">Distribution center</option><option value="disruption">High disruption</option><option value="narrow">Narrow aisles</option></select><span>⌄</span></div>
+          <p id="scenarioDescription" class="scenario-caption">Five pick locations, balanced congestion.</p>
+          <div class="hairline"></div>
+          <div class="row-between edit-title"><label class="input-label">MAP EDITOR</label><span class="tiny-hint">CLICK ANY CELL</span></div>
+          <div class="tools" role="group" aria-label="Map editing tools">
+            <button class="tool active" data-tool="inspect" title="Inspect cells" aria-pressed="true"><span class="tool-icon">⌕</span>Inspect</button>
+            <button class="tool" data-tool="task" title="Add or remove task" aria-pressed="false"><span class="tool-icon task-symbol">＋</span>Pick point</button>
+            <button class="tool" data-tool="shelf" title="Add or remove a shelf" aria-pressed="false"><span class="tool-icon">▦</span>Shelf</button>
+            <button class="tool" data-tool="hazard" title="Add or remove slippery floor" aria-pressed="false"><span class="tool-icon risk-symbol">◇</span>Risk zone</button>
+            <button class="tool" data-tool="erase" title="Erase cell content" aria-pressed="false"><span class="tool-icon">⌫</span>Erase</button>
+          </div>
+          <div class="environment-facts">
+            <div><span>GRID DIMENSIONS</span><strong id="gridDim">20 × 13</strong></div>
+            <div><span>PICK LOCATIONS</span><strong id="taskNum">05</strong></div>
+            <div><span>RISK CELLS</span><strong id="riskNum">09</strong></div>
+            <div><span>SHELF CELLS</span><strong id="wallNum">00</strong></div>
+          </div>
+          <button id="runBtn" class="primary-btn"><span>✧</span><span id="runLabel">RUN AI ANALYSIS</span><span class="btn-arrow">↗</span></button>
+          <div class="under-button"><button id="resetBtn" class="text-btn">↺ &nbsp;Restore preset</button><span id="dirtyText">READY TO COMPUTE</span></div>
+        </section>
+        <section class="panel pipeline-panel" id="intelligence">
+          <div class="section-top"><span class="eyebrow">02 / INTELLIGENCE STACK</span><span class="mini-tag">3 ALGORITHMS</span></div>
+          <h2>The intelligence behind it.</h2><p class="subtle">From the shortest path to the next best action.</p>
+          <div class="pipeline">
+            <div class="algo-item"><span class="algo-no">01</span><div><strong>A* Search</strong><p>Optimal point-to-point navigation</p></div><span class="algo-state">PATH</span></div>
+            <div class="pipeline-link"></div>
+            <div class="algo-item"><span class="algo-no">02</span><div><strong>Hill Climbing</strong><p>Multi-stop route optimization</p></div><span class="algo-state">ORDER</span></div>
+            <div class="pipeline-link"></div>
+            <div class="algo-item"><span class="algo-no">03</span><div><strong>MDP / Value Iteration</strong><p>Risk-aware stochastic decisions</p></div><span class="algo-state">ACTION</span></div>
+          </div>
+        </section>
+        <div class="left-footnote"><span class="sparkle">◎</span><span>A space to experiment.<br>Edit, simulate, and discover a better route.</span></div>
+      </aside>
+
+      <section class="center-stage">
+        <div class="stage-head"><div><span class="eyebrow">THE WAREHOUSE</span><h2 id="warehouseTitle">Distribution center</h2></div></div>
+        <div class="metric-grid">
+          <div class="small-metric"><div class="eyebrow">BASELINE DISTANCE</div><div><strong id="baseSteps">—</strong><span>STEPS</span></div><p>Nearest-neighbor picking route</p></div>
+          <div class="small-metric"><div class="eyebrow">OPTIMIZED DISTANCE</div><div><strong id="optSteps">—</strong><span>STEPS</span></div><p>Hill Climbing + A* route</p></div>
+          <div class="small-metric"><div class="eyebrow">DISTANCE SAVED</div><div><strong id="savingPct">—</strong><span>%</span></div><p id="savingLabel">Compared with baseline</p></div>
+        </div>
+        <div class="panel map-panel">
+          <div class="map-head"><div class="map-title"><span class="live-indicator"><span class="pulse-dot"></span> LIVE SIMULATOR</span><span id="missionStatus" class="mission-status" role="status" aria-live="polite">STANDBY</span></div><div class="map-actions"><button id="policyBtn" class="micro-btn" aria-label="Toggle MDP policy field" aria-pressed="false" title="Toggle MDP policy arrows" disabled>⇢ <span>Policy field</span></button><button id="downloadBtn" class="micro-btn" aria-label="Export mission results" title="Export simulation result as JSON" disabled>↓ <span>Export</span></button></div></div>
+          <div class="canvas-frame"><canvas id="warehouseCanvas" tabindex="0" role="img" aria-label="Interactive top-down warehouse grid. Use the map editor tools and click a cell to edit."></canvas><div class="canvas-coordinates"><span>WAREHOUSE DIGITAL TWIN</span><span>X → &nbsp; Y ↓</span></div><div id="cellTooltip" class="cell-tooltip" hidden></div><div class="map-loading" id="mapLoading" hidden><span class="loading-orbit"></span><strong>Finding a better way.</strong><span>Planning routes & evaluating policies</span></div></div>
+          <div class="map-footer"><div class="legend"><span><i class="legend-square wall-legend"></i> Shelf</span><span><i class="legend-square hazard-legend"></i> Hazard</span><span><i class="legend-dot pick-legend"></i> Pick-up</span><span><i class="legend-dot depot-legend"></i> Depot</span><span><i class="legend-line route-legend"></i> Route</span></div><span class="hint">DRAGLESS EDITOR · CLICK TO MODIFY</span></div>
+        </div>
+        <div class="panel playback-panel">
+          <div class="playback-header"><div><div class="eyebrow">03 / ROUTE PLAYBACK</div><h3>See the thinking in motion.</h3></div><div class="mode-select"><span>VIEW</span><div class="select-wrap route-select"><select id="viewSelect" aria-label="Select route to visualize"><option value="mdp">MDP · Stochastic run</option><option value="optimized">A* + Hill Climbing</option><option value="nearest">A* · Nearest neighbor</option><option value="shortest">A* · No risk policy</option></select><span>⌄</span></div></div></div>
+          <div class="transport"><button id="playBtn" class="play-button" aria-pressed="false" aria-label="Play or pause simulation" disabled><span id="playGlyph">▶</span></button><button id="backBtn" class="transport-icon" aria-label="Step backward" title="Step backward" disabled>❮</button><button id="forwardBtn" class="transport-icon" aria-label="Step forward" title="Step forward" disabled>❯</button><div class="timeline"><div class="row-between"><label for="timelineInput">MISSION PROGRESS</label><span id="timeStamp">000 / 000 STEPS</span></div><input id="timelineInput" type="range" min="0" max="0" value="0" disabled /></div><div class="speed-control"><label for="speedSelect">SPEED</label><select id="speedSelect"><option value="300">1×</option><option value="150" selected>2×</option><option value="75">4×</option><option value="40">8×</option></select></div></div>
+          <div id="runComment" class="run-comment"><span class="comment-pip"></span> Ready to show an optimized mission.</div>
+        </div>
+
+      </section>
+
+      <aside class="right-rail">
+        <section class="panel analytics-panel" id="analytics"><div class="section-top"><span class="eyebrow">04 / PERFORMANCE</span><span class="mini-tag with-dot">60 TRIALS</span></div><h2>Better, by the numbers.</h2><p class="subtle">Measured across reproducible simulations.</p>
+          <div class="highlight-stat"><div class="highlight-top"><span>RISK EXPOSURE REDUCTION</span></div><div class="highlight-value"><strong id="riskReduction">—</strong><span id="riskReductionUnit">%</span></div><p id="riskReductionLabel">MDP vs shortest-path controller</p></div>
+          <div class="row-between bar-heading"><strong>Risk zone entries</strong><span>MEAN / 60 RUNS</span></div>
+          <div class="bar-group"><div class="bar-label"><span>Shortest-path control</span><strong id="riskBase">—</strong></div><div class="bar-track"><div id="barBase" class="bar-fill base-fill"></div></div><div class="bar-label"><span>MDP risk-aware control</span><strong id="riskMdp">—</strong></div><div class="bar-track"><div id="barMdp" class="bar-fill mdp-fill"></div></div></div>
+          <div class="stat-divide"></div>
+          <div class="compare-row"><div><span>MEAN EXECUTION STEPS</span><strong id="comparisonSteps">— vs —</strong></div><span class="info-chip">SHORT / MDP</span></div>
+          <div class="compare-row"><div><span>MISSION SUCCESS RATE</span><strong id="successRate">—</strong></div><span class="info-chip">MDP / 60 TRIALS</span></div>
+          <div class="compare-row"><div><span>VALUE ITERATION</span><strong id="sweeps">—</strong></div><span class="info-chip">TOTAL SWEEPS</span></div>
+          <div class="compare-row"><div><span>GOAL-REACHABILITY RECOVERY</span><strong id="recoveryCells">—</strong></div><span class="info-chip">CORRECTED POLICY CELLS</span></div>
+          <p class="stats-disclaimer">Synthetic simulator · fixed random seeds · shared movement model. Results are illustrative, not real-world measurements.</p>
+        </section>
+        <section class="panel route-panel"><div class="section-top"><span class="eyebrow">05 / ROUTE LOGIC</span><span class="mini-tag">AUTO-PLANNED</span></div><h2>Visiting order</h2><p class="subtle">Hill Climbing chooses a task sequence using A* distances.</p>
+          <div id="orderPills" class="order-pills"><span class="order-placeholder">Waiting for analysis</span></div>
+          <div class="formulas"><div><span>A* PRIORITY</span><code>f(n) = g(n) + h(n)</code></div><div><span>LOCAL SEARCH</span><code>min Σ distance(i, j)</code></div><div><span>MDP BELLMAN BACKUP</span><code>V(s) = max Σ P [ R + γV ]</code></div></div>
+        </section>
+        <div class="right-caption"><span>↗</span> SMALL MOVES. MEASURABLE IMPACT.</div>
+      </aside>
+    </main>
+    <footer class="page-footer"><span>AISLE<span class="footer-dot">.AI</span> <span class="footer-divider">/</span> WAREHOUSE INTELLIGENCE LAB</span><span>BUILT TO EXPLORE WHAT'S POSSIBLE <span class="footer-star">✳</span></span></footer>
+  </div>
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
